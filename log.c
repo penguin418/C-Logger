@@ -21,7 +21,7 @@
 // referenced internally
 void log__tag(char* filepath, int line, char* func);
 void log__color(enum log_level level);
-void setLevel(enum log_level level);
+void log__setLevel(enum log_level level);
 void log__logging(enum log_level level, char* filepath, int line, char* func, char* msg);
 void log__loggingI(enum log_level level, char* filepath, int line, char* func, char* msg, int target);
 void log__loggingF(enum log_level level, char* filepath, int line, char* func, char* msg, float target);
@@ -79,18 +79,20 @@ void log__tag(char* filepath, int line, char* func) {
 	printf("%-15s[%3i] %-10s:", filepath + i + 1, line, func);
 }
 
+void log__setLevel(enum log_level level) {
+	Log.level = level;
+}
+
 // referenced externally (direct)
 struct log Log = {
 	.level = VERBOSE,
 	.Logging = log__logging,
 	.LoggingI = log__loggingI,
 	.LoggingF = log__loggingF,
-	.LoggingS = log_loggingS
+	.LoggingS = log_loggingS,
+	.setLevel = log__setLevel
 };
 
-void setLevel(enum log_level level) {
-	Log.level = level;
-}
 
 #undef SEPARATOR
 #endif _LOG
